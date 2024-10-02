@@ -15,3 +15,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.feature-slider {
+  margin: 10px;
+}
+
+.feature-slider .slick-dots {
+  bottom: -30px;
+}
+
+.feature-slider .slick-dots li button:before {
+  font-size: 12px;
+  color: #687494;
+}
+
+.feature-slider .slick-prev, 
+.feature-slider .slick-next {
+  z-index: 1;
+}
+
+.feature-slider .slick-prev {
+  left: -25px;
+}
+
+.feature-slider .slick-next {
+  right: -25px;
+}
