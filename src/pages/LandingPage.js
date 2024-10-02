@@ -7,6 +7,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronDown } from 'lucide-react';
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
+import { useEffect } from 'react';
 
 // Import other images for the slider
 import featureImage2 from './background/image2.jpg';
@@ -23,6 +26,14 @@ function LandingPage() {
     autoplay: true,
     autoplaySpeed: 3000,
   };
+  const { isSignedIn } = useAuth();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      history.push('/dashboard');  
+    }
+  }, [isSignedIn, history]);
 
   // FAQ data
   const faqs = [

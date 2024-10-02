@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Home, FileText, Briefcase, Building, User, ChevronLeft, ChevronRight } from 'lucide-react';
-// Import Clerk components and hooks
-import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/clerk-react';
+import { Home, FileText, Briefcase, Building, User, ChevronLeft, ChevronRight, Zap, HelpCircle } from 'lucide-react';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user } = useUser();  // Get user info from Clerk
+  const [generationsUsed, setGenerationsUsed] = useState(5); // Example: 5 generations used
+  const maxGenerations = 5; // Max free generations
 
   const toggleNavbar = () => setIsOpen(!isOpen);
+
+  const getProgressWidth = (used, max) => `${(used / max) * 100}%`;
 
   return (
     <nav className={`bg-gray-900 text-white h-screen ${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 flex flex-col`}>
@@ -20,11 +22,35 @@ const Navbar = () => {
         <NavItem icon={<FileText size={24} />} text="Resume Based QA" to="/resume-qa" isOpen={isOpen} />
         <NavItem icon={<Briefcase size={24} />} text="Role Based QA" to="/role-qa" isOpen={isOpen} />
         <NavItem icon={<Building size={24} />} text="Company Based QA" to="/company-qa" isOpen={isOpen} />
-        {/* Link the profile to Clerk's user profile page */}
-        <NavItem icon={<User size={24} />} text="Edit Profile" to="/profile" isOpen={isOpen} />
+        <NavItem icon={<HelpCircle size={24} />} text="Quiz Section" to="/quiz" isOpen={isOpen} /> {/* New Quiz Section */}
       </div>
+
+      {/* Upgrade to Pro Section */}
       <div className="p-4">
-        {/* Clerk's UserButton allows users to access profile settings */}
+        <div className="bg-gray-800 p-4 rounded-lg text-center">
+          {isOpen ? (
+            <>
+              <p className="text-sm mb-2">{generationsUsed} / {maxGenerations} Free Generations</p>
+              <div className="w-full bg-gray-600 h-2 rounded-full mb-2">
+                <div
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
+                  style={{ width: getProgressWidth(generationsUsed, maxGenerations) }}
+                ></div>
+              </div>
+              <Link to="/upgrade" className="inline-flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:opacity-90">
+                Upgrade <Zap size={16} className="ml-2" />
+              </Link>
+            </>
+          ) : (
+            <Link to="/upgrade" className="inline-flex items-center justify-center text-white hover:opacity-90">
+              <Zap size={24} />
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Profile Icon */}
+      <div className="p-4">
         <SignedIn>
           <UserButton afterSignOutUrl="/" />
         </SignedIn>
