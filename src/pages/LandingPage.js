@@ -7,12 +7,26 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronDown } from 'lucide-react';
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
+import { useEffect } from 'react';
 
 // Import other images for the slider
 import featureImage2 from './background/image2.jpg';
 import featureImage3 from './background/image3.jpg';
 
 function LandingPage() {
+
+
+  const { isSignedIn } = useAuth();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      history.push('/dashboard');  
+    }
+  }, [isSignedIn, history]);
+
   // Slider settings
   const sliderSettings = {
     dots: true,
